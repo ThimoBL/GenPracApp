@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="GenPracApp.WebAPI/GenPracApp.WebAPI.csproj" />
+  <Project Path="GenPracApp.WebSPA/genpracapp.webspa.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
