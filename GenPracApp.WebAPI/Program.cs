@@ -6,7 +6,7 @@ namespace GenPracApp.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
 
             // Add services to the container.
 
@@ -14,14 +14,14 @@ namespace GenPracApp.WebAPI
 
             var app = builder.Build();
 
-            app.MapOpenApi();
+            app.UseSwagger();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/openapi/v1.json", "api");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "api");
                 });
             }
 
