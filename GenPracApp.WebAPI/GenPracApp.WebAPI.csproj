@@ -9,9 +9,14 @@
   <PropertyGroup>
     <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
     <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)</OpenApiDocumentsDirectory>
+    <UserSecretsId>3db7d4de-51f3-422c-8d7f-6797805befc7</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/a0bed3b2-0242-4654-9a32-0e2dee59cda2/resourceGroups/practicegroup/providers/microsoft.insights/components/GenPracApp-AppInsights-WebAPI</ApplicationInsightsResourceId>
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.17.0" />
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.4.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="10.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

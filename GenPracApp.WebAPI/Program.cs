@@ -1,3 +1,5 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+
 namespace GenPracApp.WebAPI
 {
     public class Program
@@ -7,6 +9,7 @@ namespace GenPracApp.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddSwaggerGen();
+            builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
             // Add services to the container.
 
