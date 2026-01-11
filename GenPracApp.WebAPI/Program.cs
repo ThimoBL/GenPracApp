@@ -24,7 +24,7 @@ namespace GenPracApp.WebAPI
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.WithOrigins(corsOrigin) // Your React app URL
+                    policy.AllowAnyOrigin() // Your React app URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
