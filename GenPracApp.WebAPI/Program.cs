@@ -24,7 +24,7 @@ namespace GenPracApp.WebAPI
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.AllowAnyOrigin() // Your React app URL
+                    policy.WithOrigins("https://gentle-mud-043be6803.3.azurestaticapps.net") // Your React app URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
