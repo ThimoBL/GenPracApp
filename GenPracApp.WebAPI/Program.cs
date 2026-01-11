@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 namespace GenPracApp.WebAPI
