@@ -29,6 +29,8 @@ msalInstance.addEventCallback((event: any) => {
   }
 });
 
+console.log(JSON.stringify(import.meta.env));
+
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
   <App instance={msalInstance} />
