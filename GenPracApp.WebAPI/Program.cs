@@ -8,6 +8,9 @@ namespace GenPracApp.WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var corsOrigin = builder.Configuration
+                .GetSection("Cors:AllowedOrigins")
+                .Get<string[]>();
 
             builder.Services.AddSwaggerGen();
             builder.Services.AddOpenTelemetry().UseAzureMonitor();
@@ -21,7 +24,7 @@ namespace GenPracApp.WebAPI
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173") // Your React app URL
+                    policy.WithOrigins(corsOrigin) // Your React app URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();

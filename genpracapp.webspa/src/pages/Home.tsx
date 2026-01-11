@@ -22,7 +22,7 @@ const Home = () => {
                 console.log("Access Token:", accessToken);
 
                 // Call your API with the access token
-                fetch("http://localhost:5000/weatherforecast", {
+                fetch(import.meta.env.VITE_WEBAPI_BASE_URL + "weatherforecast", {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${accessToken}`

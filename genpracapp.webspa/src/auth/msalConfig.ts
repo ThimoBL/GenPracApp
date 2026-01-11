@@ -1,50 +1,50 @@
 import { LogLevel } from '@azure/msal-browser';
 
- /**
- * Configuration object to be passed to MSAL instance on creation. 
- * For a full list of MSAL.js configuration parameters, visit:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
- */
+/**
+* Configuration object to be passed to MSAL instance on creation. 
+* For a full list of MSAL.js configuration parameters, visit:
+* https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
+*/
 
- export const msalConfig = {
-     auth: {
-         clientId: '20b2509c-1209-4f4e-ba7d-82750648681d', // This is the ONLY mandatory field that you need to supply.
-         authority: 'https://GenPracAppTenant.ciamlogin.com', // Replace the placeholder with your tenant info
-         redirectUri: 'http://localhost:5173', // Points to window.location.origin. You must register this URI on Microsoft Entra admin center/App Registration.
-         postLogoutRedirectUri: 'http://localhost:5173', // Indicates the page to navigate after logout.
-         navigateToLoginRequestUrl: false, // If "true", will navigate back to the original request location before processing the auth code response.
-     },
-     cache: {
-         cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
-         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
-     },
-     system: {
-         allowNativeBroker: false,
-         loggerOptions: {
-             loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
-                 if (containsPii) {
-                     return;
-                 }
-                 switch (level) {
-                     case LogLevel.Error:
-                         console.error(message);
-                         return;
-                     case LogLevel.Info:
-                         console.info(message);
-                         return;
-                     case LogLevel.Verbose:
-                         console.debug(message);
-                         return;
-                     case LogLevel.Warning:
-                         console.warn(message);
-                         return;
-                     default:
-                         return;
-                 }
-             },
-         },
-     },
- };
+export const msalConfig = {
+    auth: {
+        clientId: import.meta.env.VITE_MSAL_CLIENT_ID, // This is the ONLY mandatory field that you need to supply.
+        authority: import.meta.env.VITE_MSAL_AUTHORITY, // Replace the placeholder with your tenant info
+        redirectUri: import.meta.env.VITE_MSAL_REDIRECT_URI, // Points to window.location.origin. You must register this URI on Microsoft Entra admin center/App Registration.
+        postLogoutRedirectUri: import.meta.env.VITE_MSAL_LOGOUT_REDIRECT_URI, // Indicates the page to navigate after logout.
+        navigateToLoginRequestUrl: false, // If "true", will navigate back to the original request location before processing the auth code response.
+    },
+    cache: {
+        cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+        storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+    },
+    system: {
+        allowNativeBroker: false,
+        loggerOptions: {
+            loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
+                if (containsPii) {
+                    return;
+                }
+                switch (level) {
+                    case LogLevel.Error:
+                        console.error(message);
+                        return;
+                    case LogLevel.Info:
+                        console.info(message);
+                        return;
+                    case LogLevel.Verbose:
+                        console.debug(message);
+                        return;
+                    case LogLevel.Warning:
+                        console.warn(message);
+                        return;
+                    default:
+                        return;
+                }
+            },
+        },
+    },
+};
 
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -61,7 +61,7 @@ export const loginRequest = {
  * Format: api://<API_CLIENT_ID>/<SCOPE_NAME>
  */
 export const apiRequest = {
-    scopes: ["api://2a364309-a2bd-4f2c-9d6e-def929b274af/Weatherforecast.Read"]
+    scopes: [`api://${import.meta.env.VITE_WEBAPI_CLIENT_ID}/Weatherforecast.Read`]
 };
 
 /**
