@@ -1,12 +1,48 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
-import { Box, Card, CardContent, Typography, Divider, Stack } from "@mui/material";
-import SignOutButton from "../components/auth/SignOutButton";
-import SignInButton from "../components/auth/SignInButton";
-import RegisterButton from "../components/auth/RegisterButton";
+import { Box, Card, CardContent, Typography, Divider, Stack, Button } from "@mui/material";
+import SignOutButton from "../components/common/SignOutButton";
+import SignInButton from "../components/common/SignInButton";
+import RegisterButton from "../components/common/RegisterButton";
+import { apiRequest } from "../auth/msalConfig";
+import { InteractionRequiredAuthError } from "@azure/msal-browser";
 
 const Home = () => {
     const { instance } = useMsal();
     const activeAccount = instance.getActiveAccount();
+
+    const getWeatherData = async () => {
+        const accessTokenRequest = {
+            scopes: apiRequest.scopes
+        };
+
+        instance.acquireTokenSilent(accessTokenRequest)
+            .then((accessTokenResponse) => {
+                let accessToken = accessTokenResponse.accessToken;
+
+                console.log("Access Token:", accessToken);
+
+                // Call your API with the access token
+                fetch("http://localhost:5000/weatherforecast", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Weather Data:", data);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching weather data:", error);
+                    });
+            })
+            .catch((error) => {
+                if (error instanceof InteractionRequiredAuthError) {
+                    instance.acquireTokenRedirect(accessTokenRequest);
+                }
+                console.log(error);
+            });
+    };
 
     return (
         <Box
@@ -41,6 +77,9 @@ const Home = () => {
                                         <Typography variant="body1">
                                             {activeAccount.username || "N/A"}
                                         </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Button variant="contained" color="secondary" onClick={getWeatherData}>Get Weather Data (Check Console)</Button>
                                     </Box>
                                     {activeAccount.idTokenClaims && 'email' in activeAccount.idTokenClaims && (
                                         <Box>

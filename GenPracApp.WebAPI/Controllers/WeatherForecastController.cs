@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GenPracApp.WebAPI.Controllers
@@ -12,12 +13,13 @@ namespace GenPracApp.WebAPI.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         ];
 
+        [Authorize]
         [EndpointSummary("Get Weather Forecasts")]
         [EndpointDescription("Retrieves a list of weather forecasts for the next 5 days.")]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get(
-            [Description("The number of days to forecast")] int days = 5
-        )
+                [Description("The number of days to forecast")] int days = 5
+            )
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -26,6 +28,12 @@ namespace GenPracApp.WebAPI.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("test-auth")]
+        public string TestAuth()
+        {
+            return "Hello, World!";
         }
     }
 }

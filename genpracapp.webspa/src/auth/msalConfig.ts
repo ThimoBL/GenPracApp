@@ -15,7 +15,7 @@ import { LogLevel } from '@azure/msal-browser';
          navigateToLoginRequestUrl: false, // If "true", will navigate back to the original request location before processing the auth code response.
      },
      cache: {
-         cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+         cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
          storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
      },
      system: {
@@ -54,6 +54,14 @@ import { LogLevel } from '@azure/msal-browser';
  */
 export const loginRequest = {
     scopes: ["openid", "profile"]
+};
+
+/**
+ * Scopes for your API. You need to expose these in your API's app registration.
+ * Format: api://<API_CLIENT_ID>/<SCOPE_NAME>
+ */
+export const apiRequest = {
+    scopes: ["api://2a364309-a2bd-4f2c-9d6e-def929b274af/Weatherforecast.Read"]
 };
 
 /**

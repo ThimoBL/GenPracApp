@@ -1,8 +1,8 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
 import { Navigate } from "react-router-dom";
 import { Box, Stack, Typography } from "@mui/material";
-import SignInButton from "../../components/auth/SignInButton";
-import RegisterButton from "../../components/auth/RegisterButton";
+import SignInButton from "../../components/common/SignInButton";
+import RegisterButton from "../../components/common/RegisterButton";
 
 const SignIn = () => {
     return (

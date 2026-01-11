@@ -1,6 +1,6 @@
 import { useMsal } from "@azure/msal-react";
 import { Box, Card, CardContent, Typography, Divider, Stack } from "@mui/material";
-import SignOutButton from "../../components/auth/SignOutButton";
+import SignOutButton from "../../components/common/SignOutButton";
 
 const Profile = () => {
     const { instance } = useMsal();

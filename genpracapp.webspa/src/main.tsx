@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { EventType, PublicClientApplication } from '@azure/msal-browser';
-import { msalConfig } from './msalConfig.ts';
+import { msalConfig } from './auth/msalConfig.ts';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -17,20 +17,20 @@ const msalInstance = new PublicClientApplication(msalConfig);
 
 // Default to using the first account if no account is active on page load
 if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
-    // Account selection logic is app dependent. Adjust as needed for different use cases.
-    msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0]);
+  // Account selection logic is app dependent. Adjust as needed for different use cases.
+  msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0]);
 }
 
 // Listen for sign-in event and set active account
 msalInstance.addEventCallback((event: any) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
-        const account = event.payload.account;
-        msalInstance.setActiveAccount(account);
-    }
+  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
+    const account = event.payload.account;
+    msalInstance.setActiveAccount(account);
+  }
 });
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
-    <App instance={msalInstance} />
+  <App instance={msalInstance} />
   // </StrictMode>,
 )
