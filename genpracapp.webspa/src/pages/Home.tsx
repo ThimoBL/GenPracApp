@@ -44,12 +44,45 @@ const Home = () => {
             });
     };
 
+    const testApiConnection = async () => {
+        const accessTokenRequest = {
+            scopes: apiRequest.scopes
+        };
+
+        instance.acquireTokenSilent(accessTokenRequest)
+            .then((accessTokenResponse) => {
+                let accessToken = accessTokenResponse.accessToken;
+
+                console.log("Access Token:", accessToken);
+
+                // Call your API with the access token
+                fetch(import.meta.env.VITE_WEBAPI_BASE_URL + "weatherforecast/test-auth", {
+                    method: "GET",
+                    // headers: {
+                    //     Authorization: `Bearer ${accessToken}`
+                    // }
+                })
+                    .then(data => {
+                        console.log("Tested api:", data);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching weather data:", error);
+                    });
+            })
+            .catch((error) => {
+                if (error instanceof InteractionRequiredAuthError) {
+                    instance.acquireTokenRedirect(accessTokenRequest);
+                }
+                console.log("Error retreiving acquireTokenSilent: ", error);
+            });
+    };
+
+
     return (
         <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
-            minHeight="100vh"
             bgcolor="#f5f5f5"
         >
             <Card sx={{ minWidth: 400, maxWidth: 600 }}>
@@ -79,7 +112,9 @@ const Home = () => {
                                         </Typography>
                                     </Box>
                                     <Box>
-                                        <Button variant="contained" color="secondary" onClick={getWeatherData}>Get Weather Data (Check Console)</Button>
+                                        <Button variant="contained" color="secondary" onClick={getWeatherData}>Get Weather Data</Button>
+                                        <Divider sx={{ my: 3 }} />
+                                        <Button variant="contained" color="primary" onClick={testApiConnection}>Test api Connection</Button>
                                     </Box>
                                     {activeAccount.idTokenClaims && 'email' in activeAccount.idTokenClaims && (
                                         <Box>

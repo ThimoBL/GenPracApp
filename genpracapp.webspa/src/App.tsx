@@ -1,17 +1,22 @@
-import type { PublicClientApplication } from "@azure/msal-browser"
-import { MsalProvider } from "@azure/msal-react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
+import AzureMsalProvider from "./providers/AzureMsalProvider"
+import MuiThemeProvider from "./providers/MuiThemeProvider"
+import MainLayout from "./components/layout/MainLayout"
 
-const App = ({ instance }: { instance: PublicClientApplication }) => {
+const App = () => {
   return (
-    <MsalProvider instance={instance}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
-    </MsalProvider>
+    <AzureMsalProvider>
+      <MuiThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </MuiThemeProvider>
+    </AzureMsalProvider>
   )
 }
 
