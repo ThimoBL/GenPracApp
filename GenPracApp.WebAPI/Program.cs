@@ -1,5 +1,7 @@
+using Azure.Identity;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Identity.Web;
 
 namespace GenPracApp.WebAPI
@@ -9,12 +11,40 @@ namespace GenPracApp.WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var appConfigEndpoint = builder.Configuration.GetValue<string>("Endpoints:AppConfiguration")
+                ?? throw new InvalidOperationException("The setting `Endpoints:AppConfiguration` was not found.");
+
+            var azCredentials = new DefaultAzureCredential(
+                new DefaultAzureCredentialOptions {
+                    TenantId = "7f934ed0-4f65-44e2-8232-c4ab96384e6c",
+
+                    AdditionallyAllowedTenants = { "*" }
+                }
+            );
+
+            if (!string.IsNullOrEmpty(appConfigEndpoint))
+            {
+
+                builder.Configuration.AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(new Uri(appConfigEndpoint), azCredentials)
+                    .Select("WebAPI:*", builder.Environment.EnvironmentName)
+                    .ConfigureRefresh(refreshOptions =>
+                    {
+                        refreshOptions.RegisterAll();
+                    });
+                });
+            }
+
             var corsOrigin = builder.Configuration
-                .GetSection("Cors:AllowedOrigins")
-                .Get<string[]>();
+                .GetValue<string>("WebAPI:CORS:AllowedOrigins");
 
             builder.Services.AddSwaggerGen();
             builder.Services.AddOpenTelemetry().UseAzureMonitor();
+
+            // Add Azure App Configuration to the container
+            builder.Services.AddAzureAppConfiguration();
 
             // Add authentication with Microsoft Identity platform
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,13 +79,15 @@ namespace GenPracApp.WebAPI
                 });
             }
 
+            // Use Azure App Configuration middleware for dynamic configuration refresh
+            app.UseAzureAppConfiguration();
+
             app.UseHttpsRedirection();
 
             app.UseCors("AllowReactApp");
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
