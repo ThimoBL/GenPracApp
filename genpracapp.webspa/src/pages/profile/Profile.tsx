@@ -7,13 +7,7 @@ const Profile = () => {
     const activeAccount = instance.getActiveAccount();
 
     return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="100vh"
-            bgcolor="#f5f5f5"
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
             <Card sx={{ minWidth: 400, maxWidth: 600 }}>
                 <CardContent>
                     <Typography variant="h4" component="h1" gutterBottom>

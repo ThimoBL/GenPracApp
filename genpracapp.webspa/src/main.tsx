@@ -8,10 +8,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { StrictMode } from 'react';
 
-
-
-console.log(JSON.stringify(import.meta.env));
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

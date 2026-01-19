@@ -1,19 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
+import { BrowserRouter } from "react-router-dom"
 import AzureMsalProvider from "./providers/AzureMsalProvider"
 import MuiThemeProvider from "./providers/MuiThemeProvider"
-import MainLayout from "./components/layout/MainLayout"
+import AppRoutes from "./AppRoutes"
 
 const App = () => {
   return (
     <AzureMsalProvider>
       <MuiThemeProvider>
         <BrowserRouter>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Home />} />
-            </Route>
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </MuiThemeProvider>
     </AzureMsalProvider>

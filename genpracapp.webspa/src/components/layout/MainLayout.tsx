@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Box, Container, IconButton, Button, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -29,11 +29,20 @@ const MainLayout = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{ mr: 4 }}>
                         GenPracApp
                     </Typography>
+                    <Button color="inherit" component={Link} to="/">
+                        Home
+                    </Button>
+                    <Button color="inherit" component={Link} to="/about">
+                        About
+                    </Button>
+                    <Button color="inherit" component={Link} to="/profile" sx={{ mr: 'auto' }}>
+                        Profile
+                    </Button>
                     <UnauthenticatedTemplate>
-                        <Button color="inherit">Login</Button>
+                        <Button color="inherit" component={Link} to="/auth/signin">Login</Button>
                     </UnauthenticatedTemplate>
                     <AuthenticatedTemplate>
                         <IconButton
