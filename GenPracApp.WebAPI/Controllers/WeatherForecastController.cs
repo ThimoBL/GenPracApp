@@ -30,6 +30,7 @@ namespace GenPracApp.WebAPI.Controllers
             .ToArray();
         }
 
+        [AllowAnonymous]
         [HttpGet("test-auth")]
         public string TestAuth()
         {
