@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace GenPracApp.WebAPI.Controllers
 {
@@ -14,6 +15,7 @@ namespace GenPracApp.WebAPI.Controllers
         ];
 
         [Authorize]
+        [RequiredScope("Weatherforecast.Read")]
         [EndpointSummary("Get Weather Forecasts")]
         [EndpointDescription("Retrieves a list of weather forecasts for the next 5 days.")]
         [HttpGet]
