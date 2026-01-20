@@ -12,8 +12,8 @@ namespace GenPracApp.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var appConfigEndpoint = builder.Configuration.GetValue<string>("Endpoints:AppConfiguration")
-                ?? throw new InvalidOperationException("The setting `Endpoints:AppConfiguration` was not found.");
+            var appConfigEndpoint = builder.Configuration.GetValue<string>("ENDPOINTS_APPCONFIGURATION")
+                ?? throw new InvalidOperationException("The setting `ENDPOINTS_APPCONFIGURATION` was not found.");
 
             var azCredentials = new DefaultAzureCredential(
                 new DefaultAzureCredentialOptions {
