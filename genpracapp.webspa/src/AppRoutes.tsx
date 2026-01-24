@@ -4,6 +4,7 @@ import AuthLayout from "./components/layout/AuthLayout";
 import Welcome from "./pages/Welcome";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import FileUploads from "./pages/FileUploads";
 import SignIn from "./pages/auth/SignIn";
 import Profile from "./pages/profile/Profile";
 
@@ -21,6 +22,7 @@ const AppRoutes = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/uploads" element={<FileUploads />} />
                 {/* Add more protected routes here */}
             </Route>
 

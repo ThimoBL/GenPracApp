@@ -38,6 +38,9 @@ const MainLayout = () => {
                     <Button color="inherit" component={Link} to="/about">
                         About
                     </Button>
+                    <Button color="inherit" component={Link} to="/uploads">
+                        Uploads
+                    </Button>
                     <Button color="inherit" component={Link} to="/profile" sx={{ mr: 'auto' }}>
                         Profile
                     </Button>
