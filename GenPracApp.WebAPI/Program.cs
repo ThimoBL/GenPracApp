@@ -47,7 +47,6 @@ namespace GenPracApp.WebAPI
             builder.Services.AddSwaggerGen();
             builder.Services.AddOpenTelemetry().UseAzureMonitor(opt => { opt.ConnectionString = openTelemConnString; });
             builder.Services.AddAzureAppConfiguration();
-            builder.Services.AddControllers();
 
             // Add authentication with Microsoft Identity platform
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -65,6 +64,8 @@ namespace GenPracApp.WebAPI
                         .AllowCredentials();
                 });
             });
+
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
