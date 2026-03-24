@@ -41,12 +41,7 @@ namespace GenPracApp.WebAPI
                 .GetValue<string>("WebAPI:CORS:AllowedOrigins");
 
             builder.Services.AddSwaggerGen();
-
-            var appInsightsConnectionString = builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
-            if (!string.IsNullOrEmpty(appInsightsConnectionString))
-            {
-                builder.Services.AddOpenTelemetry().UseAzureMonitor();
-            }
+            builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
             // Add Azure App Configuration to the container
             builder.Services.AddAzureAppConfiguration();
