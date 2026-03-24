@@ -38,10 +38,11 @@ namespace GenPracApp.WebAPI
             }
 
             var corsOrigin = builder.Configuration
-                .GetValue<string>("WebAPI:CORS:AllowedOrigins");
+                .GetValue<string>("WebAPI:CORS:AllowedOrigins") ?? throw new InvalidOperationException("The setting `WebAPI:CORS:AllowedOrigins` was not found");
+	    var openTelemConnString = builder.Configuration.GetValue<string>("WebAPI:OpenTelemetry") ?? throw new InvalidOperationException("The setting `WebAPI:OpenTelemetry` not found");
 
             builder.Services.AddSwaggerGen();
-            builder.Services.AddOpenTelemetry().UseAzureMonitor();
+            builder.Services.AddOpenTelemetry().UseAzureMonitor(opt => { opt.ConnectionString = openTelemConnString });
 
             // Add Azure App Configuration to the container
             builder.Services.AddAzureAppConfiguration();
