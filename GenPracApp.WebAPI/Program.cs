@@ -81,7 +81,7 @@ namespace GenPracApp.WebAPI
             }
 
             app.UseAzureAppConfiguration();
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseCors("AllowReactApp");
             app.UseAuthentication();
             app.UseAuthorization();
