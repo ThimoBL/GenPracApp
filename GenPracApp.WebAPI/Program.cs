@@ -16,36 +16,38 @@ namespace GenPracApp.WebAPI
                 ?? throw new InvalidOperationException("The setting `ENDPOINTS_APPCONFIGURATION` was not found.");
 
             var azCredentials = new DefaultAzureCredential(
-                new DefaultAzureCredentialOptions {
+                new DefaultAzureCredentialOptions
+                {
                     TenantId = "7f934ed0-4f65-44e2-8232-c4ab96384e6c",
-
                     AdditionallyAllowedTenants = { "*" }
                 }
             );
 
             if (!string.IsNullOrEmpty(appConfigEndpoint))
             {
-
                 builder.Configuration.AddAzureAppConfiguration(options =>
                 {
-                    options.Connect(new Uri(appConfigEndpoint), azCredentials)
-                    .Select("WebAPI:*", builder.Environment.EnvironmentName)
-                    .ConfigureRefresh(refreshOptions =>
-                    {
-                        refreshOptions.RegisterAll();
-                    });
+                    options
+                        .Connect(new Uri(appConfigEndpoint), azCredentials)
+                        .Select("WebAPI:*", builder.Environment.EnvironmentName)
+                        .ConfigureRefresh(refreshOptions =>
+                        {
+                            refreshOptions.RegisterAll();
+                        });
                 });
             }
 
-            var corsOrigin = builder.Configuration
-                .GetValue<string>("WebAPI:CORS:AllowedOrigins") ?? throw new InvalidOperationException("The setting `WebAPI:CORS:AllowedOrigins` was not found");
-	    var openTelemConnString = builder.Configuration.GetValue<string>("WebAPI:OpenTelemetry") ?? throw new InvalidOperationException("The setting `WebAPI:OpenTelemetry` not found");
+            var corsOrigin = builder.Configuration.GetValue<string>("WebAPI:CORS:AllowedOrigins")
+                ?? throw new InvalidOperationException("The setting `WebAPI:CORS:AllowedOrigins` was not found.");
 
+            var openTelemConnString = builder.Configuration.GetValue<string>("WebAPI:OpenTelemetry")
+                ?? throw new InvalidOperationException("The setting `WebAPI:OpenTelemetry` was not found.");
+
+            // Add services to the container
             builder.Services.AddSwaggerGen();
-            builder.Services.AddOpenTelemetry().UseAzureMonitor(opt => { opt.ConnectionString = openTelemConnString });
-
-            // Add Azure App Configuration to the container
+            builder.Services.AddOpenTelemetry().UseAzureMonitor(opt => { opt.ConnectionString = openTelemConnString; });
             builder.Services.AddAzureAppConfiguration();
+            builder.Services.AddControllers();
 
             // Add authentication with Microsoft Identity platform
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -56,22 +58,19 @@ namespace GenPracApp.WebAPI
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.WithOrigins(corsOrigin) // Your React app URL
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials();
+                    policy
+                        .WithOrigins(corsOrigin)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
             });
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
 
             var app = builder.Build();
 
             app.UseSwagger();
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwaggerUI(options =>
@@ -80,16 +79,11 @@ namespace GenPracApp.WebAPI
                 });
             }
 
-            // Use Azure App Configuration middleware for dynamic configuration refresh
             app.UseAzureAppConfiguration();
-
             app.UseHttpsRedirection();
-
             app.UseCors("AllowReactApp");
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.MapControllers();
 
             app.Run();
