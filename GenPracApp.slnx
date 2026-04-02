@@ -2,6 +2,7 @@
   <Project Path="GenPracApp.Domain/GenPracApp.Domain.csproj" />
   <Project Path="GenPracApp.Application/GenPracApp.Application.csproj" />
   <Project Path="GenPracApp.Infrastructure/GenPracApp.Infrastructure.csproj" />
+  <Project Path="GenPracApp.Tests/GenPracApp.Tests.csproj" />
   <Project Path="GenPracApp.WebAPI/GenPracApp.WebAPI.csproj" />
   <Project Path="GenPracApp.WebSPA/genpracapp.webspa.esproj">
     <Build />
