@@ -1,42 +1,36 @@
-using System.ComponentModel;
+using GenPracApp.Application.Interfaces;
+using GenPracApp.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
-namespace GenPracApp.WebAPI.Controllers
+namespace GenPracApp.WebAPI.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class WeatherForecastController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    private readonly IWeatherForecastService _service;
+
+    public WeatherForecastController(IWeatherForecastService service)
     {
-        private static readonly string[] Summaries =
-        [
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        ];
+        _service = service;
+    }
 
-        [Authorize]
-        [RequiredScope("Weatherforecast.Read")]
-        [EndpointSummary("Get Weather Forecasts")]
-        [EndpointDescription("Retrieves a list of weather forecasts for the next 5 days.")]
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get(
-                [Description("The number of days to forecast")] int days = 5
-            )
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
+    [Authorize]
+    [RequiredScope("Weatherforecast.Read")]
+    [EndpointSummary("Get Weather Forecasts")]
+    [EndpointDescription("Retrieves a list of weather forecasts.")]
+    [HttpGet]
+    public async Task<IEnumerable<WeatherForecast>> Get()
+    {
+        return await _service.GetForecastsAsync();
+    }
 
-        [AllowAnonymous]
-        [HttpGet("test-auth")]
-        public string TestAuth()
-        {
-            return "Hello, World!";
-        }
+    [AllowAnonymous]
+    [HttpGet("test-auth")]
+    public string TestAuth()
+    {
+        return "Hello, World!";
     }
 }

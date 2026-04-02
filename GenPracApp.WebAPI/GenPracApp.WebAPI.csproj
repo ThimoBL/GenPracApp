@@ -14,6 +14,11 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\GenPracApp.Application\GenPracApp.Application.csproj" />
+    <ProjectReference Include="..\GenPracApp.Infrastructure\GenPracApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
     <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.4.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />

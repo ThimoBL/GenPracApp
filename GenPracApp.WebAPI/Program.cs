@@ -1,6 +1,10 @@
 using Azure.Identity;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
+using GenPracApp.Application;
+using GenPracApp.Infrastructure;
+using GenPracApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Identity.Web;
 
@@ -65,9 +69,21 @@ namespace GenPracApp.WebAPI
                 });
             });
 
+            // Add Clean Architecture services
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+
             builder.Services.AddControllers();
 
             var app = builder.Build();
+
+            // Apply pending EF Core migrations on startup (development only)
+            if (app.Environment.IsDevelopment())
+            {
+                using var scope = app.Services.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                db.Database.Migrate();
+            }
 
             app.UseSwagger();
 
